@@ -11,6 +11,9 @@ let geolocateControl = new maplibregl.GeolocateControl({
 	},
 	trackUserLocation: true,
 	showUserLocation: true,
+	fitBoundsOptions: {
+		maxZoom: 20,
+	},
 });
 map.addControl(geolocateControl, 'bottom-left');
 geolocateControl.on('geolocate', (e) => {

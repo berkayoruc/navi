@@ -5,7 +5,7 @@ let map = new maplibregl.Map({
 	style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
 });
 
-let geolocateControl = new maplibregl.GeolocateControl({
+let geolocateControl = new CustomGeolocateControl({
 	positionOptions: {
 		enableHighAccuracy: true,
 	},
@@ -14,6 +14,7 @@ let geolocateControl = new maplibregl.GeolocateControl({
 	fitBoundsOptions: {
 		maxZoom: 20,
 	},
+	showUserHeading: true,
 });
 map.addControl(geolocateControl, 'bottom-left');
 geolocateControl.on('geolocate', (e) => {

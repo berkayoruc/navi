@@ -2,19 +2,7 @@ let map = new maplibregl.Map({
 	container: 'map', // container id
 	center: [28.787520307356175, 40.97431939329584], // starting position [lng, lat]
 	zoom: 17.5, // starting zoom
-	style: {
-		version: 8,
-		sources: {},
-		layers: [
-			{
-				id: 'background',
-				type: 'background',
-				paint: {
-					'background-color': '#ff00ff',
-				},
-			},
-		],
-	},
+	style: 'https://openmaptiles.github.io/positron-gl-style/style-cdn.json',
 });
 
 let geolocateControl = new maplibregl.GeolocateControl({

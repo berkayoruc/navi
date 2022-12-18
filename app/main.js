@@ -10,7 +10,7 @@ let map = new maplibregl.Map({
 
 const directions = new MapboxDirections({
 	accessToken:
-		'a',
+		'pk.eyJ1Ijoib3J1Y2JlIiwiYSI6ImNsYnIwN29qejBpaHQzcXMzMGVucW5kMm4ifQ.cfLaAkNuzD0p4XUcCY7H1Q',
 	unit: 'metric',
 	profile: 'mapbox/driving',
 	alternatives: true,

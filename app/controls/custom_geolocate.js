@@ -251,7 +251,12 @@ class CustomGeolocateControl extends CustomEvented {
 		);
 		const radius = position.coords.accuracy;
 		const bearing = this._map.getBearing();
-		const options = extend({ bearing }, this.options.fitBoundsOptions);
+		const options = extend(
+			{
+				bearing,
+			},
+			this.options.fitBoundsOptions
+		);
 
 		this._map.fitBounds(center.toBounds(radius), options, {
 			geolocateSource: true, // tag this camera change so it won't cause the control to change to background state
@@ -295,6 +300,7 @@ class CustomGeolocateControl extends CustomEvented {
 	_updateMarkerRotation() {
 		if (this._userLocationDotMarker && typeof this._heading === 'number') {
 			this._userLocationDotMarker.setRotation(this._heading);
+			this._map.setBearing(this._heading);
 			this._dotElement.classList.add('maplibregl-user-location-show-heading');
 		} else {
 			this._dotElement.classList.remove(

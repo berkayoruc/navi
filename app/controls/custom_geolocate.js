@@ -275,9 +275,6 @@ class CustomGeolocateControl extends CustomEvented {
 			if (this.options.showUserLocation && this.options.showAccuracyCircle) {
 				this._updateCircleRadius();
 			}
-			if (this._userLocationDotMarker && typeof this._heading === 'number') {
-				this._map.setBearing(this._heading);
-			}
 		} else {
 			this._userLocationDotMarker.remove();
 			this._accuracyCircleMarker.remove();

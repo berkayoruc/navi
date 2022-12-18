@@ -303,7 +303,6 @@ class CustomGeolocateControl extends CustomEvented {
 	_updateMarkerRotation() {
 		if (this._userLocationDotMarker && typeof this._heading === 'number') {
 			this._userLocationDotMarker.setRotation(this._heading);
-			this._map.setBearing(this._heading);
 			this._dotElement.classList.add('maplibregl-user-location-show-heading');
 		} else {
 			this._dotElement.classList.remove(

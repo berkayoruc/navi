@@ -20,7 +20,7 @@ const directions = new MapboxDirections({
 	unit: 'metric',
 });
 
-map.addControl(directions, 'bottom-right');
+// map.addControl(directions, 'bottom-right');
 
 let geolocateControl = new CustomGeolocateControl({
 	positionOptions: {
@@ -40,8 +40,8 @@ geolocateControl.on('geolocate', (e) => {
 	const locationInfo = document.getElementById('locationInfo');
 	locationInfo.innerHTML =
 		'lng:' + e.coords.longitude + ', lat:' + e.coords.latitude;
-	if (!originSetted) {
-		directions.setOrigin([e.coords.longitude, e.coords.latitude]);
-		originSetted = true;
-	}
+	// if (!originSetted) {
+	// 	directions.setOrigin([e.coords.longitude, e.coords.latitude]);
+	// 	originSetted = true;
+	// }
 });

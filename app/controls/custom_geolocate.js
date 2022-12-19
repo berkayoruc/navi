@@ -250,7 +250,10 @@ class CustomGeolocateControl extends CustomEvented {
 			position.coords.latitude
 		);
 		const radius = position.coords.accuracy;
-		const bearing = this._map.getBearing();
+		const bearing =
+			this._userLocationDotMarker && typeof this._heading === 'number'
+				? this._heading
+				: this._map.getBearing();
 		const options = extend(
 			{
 				bearing,

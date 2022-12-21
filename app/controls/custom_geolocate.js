@@ -257,6 +257,7 @@ class CustomGeolocateControl extends CustomEvented {
 		const options = extend(
 			{
 				bearing,
+				padding: 24
 			},
 			this.options.fitBoundsOptions
 		);

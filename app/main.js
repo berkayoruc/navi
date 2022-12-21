@@ -1,5 +1,3 @@
-let originSetted = false;
-
 let map = new maplibregl.Map({
 	container: 'map', // container id
 	center: [28.787520307356175, 40.97431939329584], // starting position [lng, lat]
@@ -8,17 +6,16 @@ let map = new maplibregl.Map({
 	attributionControl: false,
 });
 
-const directions = new MapboxDirections({
-	accessToken:
-		'pk.eyJ1Ijoib3J1Y2JlIiwiYSI6ImNsYnIwN29qejBpaHQzcXMzMGVucW5kMm4ifQ.cfLaAkNuzD0p4XUcCY7H1Q',
-	unit: 'metric',
-	profile: 'mapbox/driving',
-	alternatives: true,
-	geometries: 'geojson',
-	controls: { instructions: true },
-	flyTo: false,
-	unit: 'metric',
-});
+// const directions = new MapboxDirections({
+// 	accessToken: accessToken,
+// 	unit: 'metric',
+// 	profile: 'mapbox/driving',
+// 	alternatives: true,
+// 	geometries: 'geojson',
+// 	controls: { instructions: true },
+// 	flyTo: false,
+// 	unit: 'metric',
+// });
 
 // map.addControl(directions, 'bottom-right');
 
@@ -37,11 +34,103 @@ map.addControl(geolocateControl, 'bottom-left');
 geolocateControl.on('geolocate', (e) => {
 	console.log('A geolocate event has occurred.');
 	console.log('lng:' + e.coords.longitude + ', lat:' + e.coords.latitude);
-	const locationInfo = document.getElementById('locationInfo');
-	locationInfo.innerHTML =
+	const locationInfoText = document.getElementById('locationInfoText');
+	locationInfoText.innerHTML =
 		'lng:' + e.coords.longitude + ', lat:' + e.coords.latitude;
+	if (rawRoute) {
+		updateNavigationInfo({
+			map,
+			step: rawRoute.routes[0].legs[0].steps[stepIndex],
+			navigationInfo: document.getElementById('navigationInfoText'),
+			userLocation: [e.coords.longitude, e.coords.latitude],
+		});
+	}
 	// if (!originSetted) {
 	// 	directions.setOrigin([e.coords.longitude, e.coords.latitude]);
 	// 	originSetted = true;
 	// }
+});
+
+map.on('load', () => {
+	map.addSource('route-source', {
+		type: 'geojson',
+		data: {
+			type: 'Feature',
+			properties: {},
+			geometry: {
+				type: 'LineString',
+				coordinates: [],
+			},
+		},
+	});
+
+	map.addLayer({
+		id: 'route',
+		type: 'line',
+		source: 'route-source',
+		layout: {
+			'line-join': 'round',
+			'line-cap': 'round',
+		},
+		paint: {
+			'line-color': '#888',
+			'line-width': 8,
+		},
+	});
+
+	const solveRouteButton = document.getElementById('solveRoute');
+	const navigateButton = document.getElementById('navigate');
+	solveRouteButton.addEventListener('click', async (e) => {
+		if (e.target.className === 'enabled') {
+			const origin = geolocateControl._lastKnownPosition.coords;
+			// -74.253496%2C40.847629%3B-74.331185%2C40.809193
+			const routeRequest = await axios.get(
+				'https://api.mapbox.com/directions/v5/mapbox/walking/' +
+					origin.longitude +
+					',' +
+					origin.latitude +
+					';' +
+					destination.lng +
+					',' +
+					destination.lat +
+					'?alternatives=false&continue_straight=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=' +
+					accessToken
+				// '28.90914917%2C41.01954191+%3B29.07909393+%2C+41.00814351'
+			);
+			rawRoute = routeRequest.data;
+			console.log(rawRoute);
+			const route = rawRoute.routes[0];
+			console.log(route);
+			stepsLength = route.legs[0].steps.length;
+			map.getSource('route-source').setData({
+				type: 'Feature',
+				properties: {},
+				geometry: {
+					type: 'LineString',
+					coordinates: route.geometry.coordinates,
+				},
+			});
+			navigateButton.className = 'enabled';
+		}
+	});
+	navigateButton.addEventListener('click', (e) => {
+		if (e.target.className === 'enabled') {
+			updateNavigationInfo({
+				map,
+				step: rawRoute.routes[0].legs[0].steps[stepIndex],
+				navigationInfo: document.getElementById('navigationInfoText'),
+				userLocation: [
+					geolocateControl._lastKnownPosition.coords.longitude,
+					geolocateControl._lastKnownPosition.coords.latitude,
+				],
+			});
+		}
+	});
+
+	map.on('click', (e) => {
+		destination = e.lngLat;
+		if (geolocateControl._lastKnownPosition) {
+			solveRouteButton.className = 'enabled';
+		}
+	});
 });

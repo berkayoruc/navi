@@ -5,6 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Navi | Hexa</title>
+		<script
+			defer
+			src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"
+		></script>
 		<link
 			href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css"
 			rel="stylesheet"
@@ -35,6 +39,11 @@
 	</head>
 	<body>
 		<div id="map"></div>
-		<div id="locationInfo"></div>
+		<div id="locationInfo">
+			<div id="navigationInfoText"></div>
+			<div id="locationInfoText"></div>
+		</div>
+		<div id="solveRoute" class="disabled">Solve Route</div>
+		<div id="navigate" class="disabled">Navigate</div>
 	</body>
 </html>

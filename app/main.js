@@ -97,6 +97,8 @@ map.on('load', () => {
 
 	const solveRouteButton = document.getElementById('solveRoute');
 	const navigateButton = document.getElementById('navigate');
+	solveRouteButton.style.display = 'none';
+	navigateButton.style.display = 'none';
 	solveRouteButton.addEventListener('click', async (e) => {
 		if (e.target.className === 'enabled') {
 			const origin = geolocateControl._lastKnownPosition.coords;

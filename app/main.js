@@ -78,6 +78,23 @@ map.on('load', () => {
 		},
 	});
 
+	map.addSource('try', {
+		type: 'geojson',
+		data: 'https://cbsibbmap.ibb.gov.tr/ibbkbs/rest/services/BilirkisiTakip/MapServer/7/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&distance=&units=esriSRUnit_Foot&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=4326&havingClause=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&historicMoment=&returnDistinctValues=false&resultOffset=&resultRecordCount=&returnExtentOnly=false&datumTransformation=&parameterValues=&rangeValues=&quantizationParameters=&featureEncoding=esriDefault&f=geojson',
+	});
+
+	map.addLayer({
+		id: 'try',
+		type: 'circle',
+		source: 'try',
+		paint: {
+			'circle-color': '#f00',
+			'circle-radius': 6,
+			'circle-stroke-color': '#fff',
+			'circle-stroke-width': 2,
+		},
+	});
+
 	const solveRouteButton = document.getElementById('solveRoute');
 	const navigateButton = document.getElementById('navigate');
 	solveRouteButton.addEventListener('click', async (e) => {
